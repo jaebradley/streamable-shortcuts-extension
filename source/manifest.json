@@ -1,0 +1,41 @@
+{
+	"name": "Streamable Shortcuts",
+	"version": "1.0.0",
+	"description": "Streamable Shortcuts",
+	"homepage_url": "https://github.com/jaebradley/github-pr-shortcuts",
+	"manifest_version": 2,
+	"minimum_chrome_version": "58",
+	"permissions": [
+		"*://streamable.com/*",
+		"tabs",
+		"webNavigation"
+	],
+	"optional_permissions": [
+		"http://*/*",
+		"https://*/*"
+	],
+	"background": {
+		"scripts": [
+			"browser-polyfill.min.js",
+			"background.js"
+		],
+		"persistent": false
+	},
+	"content_scripts": [
+		{
+			"run_at": "document_start",
+			"matches": [
+				"*://streamable.com/*"
+			],
+			"js": [
+				"browser-polyfill.min.js",
+				"content.js"
+			]
+		}
+	],
+	"icons": {
+		// "16": "16.png",
+		// "48": "48.png",
+		// "128": "128.png"
+	}
+}
