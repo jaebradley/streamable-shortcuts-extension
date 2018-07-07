@@ -1,104 +1,127 @@
 import elementReady from 'element-ready';
 import retryer from 'retryer';
 
-const setShortcuts = () => {
-  if (!areObjectsAvailable()) {
-    return Promise.reject('Objects are not available');
-  }
+import {
+  areObjectsAvailable,
+  findNextVolume,
+  findPreviousVolume,
+  getFullScreenButton,
+  isPaused,
+  play,
+  pause,
+  getVolume,
+  setVolume,
+  getFilename,
+  getDownloadURL,
+  getDownloadLink,
+} from './utilities';
 
-  document.addEventListener('keydown', keyDown, false);
-  return Promise.resolve(true);
-}
+import {
+  TOGGLE_FULL_SCREEN_KEY,
+  TOGGLE_PLAY_KEY,
+  TOGGLE_MUTE_KEY,
+  INCREASE_VOLUME_KEY,
+  DECREASE_VOLUME_KEY,
+  DOWNLOAD_KEY,
+  REQUIRED_DOM_ELEMENTS,
+} from './constants';
 
-const areObjectsAvailable = () => {
-  console.debug('global: ', global);
-  console.debug('video: ', global.videoObject);
-  console.debug('player: ', global.playerObject);
-  return global
-    && global.videoObject
-    && global.playerObject
-    && global.playerObject.player;
-}
+let LAST_POSITIVE_VOLUME = 0.5;
 
-const volumes = [
-  0,
-  0.2,
-  0.4,
-  0.6,
-  0.8,
-  1.0,
-];
-const reversedVolumes = volumes.slice().reverse();
-
-const findNextVolume = current => volumes.find(volume => volume > current) || 1.0;
-const findPreviousVolume = current => reversedVolumes.find(volume => volume < current) || 0.0;
-const getFilename = () => `${global.videoObject.reddit_title
-|| global.videoObject.file_id
-|| global.videoObject.shortcode
-|| 'streamable'}.mp4`;
-
-let lastNonZeroVolume = 0.5;
-
-const getVolume = () => parseFloat(global.playerObject.player.volume);
-const setVolume = value => global.playerObject.setVolume(value, true);
-
-const keyDown = (e) => {
-  if (e.key === 'f') {
-    const fullScreenButton = document.querySelector('#player-fullscreen-button');
-    if (fullScreenButton) {
-      fullScreenButton.click();
+const keyDown = ({ key }) => {
+  switch (key) {
+    case TOGGLE_FULL_SCREEN_KEY: {
+      const fullScreenButton = getFullScreenButton();
+      if (fullScreenButton) {
+        fullScreenButton.click();
+      }
+      return;
     }
-  } else if (e.key === ' ') {
-    if (global.playerObject.player.paused) {
-      global.playerObject.play();
-    } else {
-      global.playerObject.pause();
+    case TOGGLE_PLAY_KEY: {
+      if (isPaused()) {
+        play();
+      } else {
+        pause();
+      }
+      return;
     }
-  } else if (e.key === 'm') {
-    const currentVolume = getVolume();
-    if (currentVolume > 0) {
-      setVolume(0);
-      lastNonZeroVolume = currentVolume;
-    } else {
-      setVolume(lastNonZeroVolume);
+
+    case TOGGLE_MUTE_KEY: {
+      const currentVolume = getVolume();
+      if (currentVolume > 0) {
+        setVolume(0);
+        LAST_POSITIVE_VOLUME = currentVolume;
+      } else {
+        setVolume(LAST_POSITIVE_VOLUME);
+      }
+      return;
     }
-  } else if (e.key === 'V') {
-    const nextVolume = findNextVolume(getVolume());
-    setVolume(findNextVolume(getVolume()));
-    if (nextVolume > 0) {
-      lastNonZeroVolume = nextVolume;
+
+    case INCREASE_VOLUME_KEY: {
+      const nextVolume = findNextVolume(getVolume());
+      setVolume(nextVolume);
+      if (nextVolume > 0) {
+        LAST_POSITIVE_VOLUME = nextVolume;
+      }
+      return;
     }
-  } else if (e.key === 'v') {
-    const nextVolume = findPreviousVolume(getVolume());
-    setVolume(nextVolume);
-    if (nextVolume > 0) {
-      lastNonZeroVolume = nextVolume;
+
+    case DECREASE_VOLUME_KEY: {
+      const nextVolume = findPreviousVolume(getVolume());
+      setVolume(nextVolume);
+      if (nextVolume > 0) {
+        LAST_POSITIVE_VOLUME = nextVolume;
+      }
+      return;
     }
-  } else if (e.key === 'd') {
-    const downloadButton = document.querySelector('#download');
-    if (downloadButton) {
-      // Bypass CORS
-      // https://github.com/Rob--W/cors-anywhere/#documentation
-      const downloadURL = `https://cors-anywhere.herokuapp.com/${downloadButton.getAttribute('href')}`;
-      window.fetch(downloadURL)
-        .then(response => response.blob())
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
+
+    case DOWNLOAD_KEY: {
+      const link = getDownloadLink();
+      if (link) {
+        global.fetch(getDownloadURL())
+          .then(response => response.blob())
+          .then((blob) => {
+            const url = global.URL.createObjectURL(blob);
+            const a = global.document.createElement('a');
             a.href = url;
             a.download = getFilename();
             a.click();
-        });
+          });
+      }
+      return;
+    }
+
+    default: {
+      console.debug('Streamable shortcuts extension: Unprocessed key ', key);
     }
   }
 };
 
-const set = async () => {
-  await elementReady('body');
+const setShortcuts = () => {
+  if (!areObjectsAvailable()) {
+    return Promise.reject(new Error('Streamable shortcuts extension: Objects are not available'));
+  }
+
+  global.document.addEventListener('keydown', keyDown, false);
+  return Promise.resolve('Streamable shortcuts extension: keydown event listener is now set');
+};
+
+const checkIfDOMElementsAreAvailable = () => Promise.all(
+  REQUIRED_DOM_ELEMENTS
+    .map(async (element) => {
+      const domElement = await elementReady(element);
+      console.debug(`Streamable shortcuts extension: element ${element} is ready: ${domElement}`);
+      return domElement;
+    }),
+);
+
+const shortcuts = async () => {
+  await checkIfDOMElementsAreAvailable();
+
   retryer(setShortcuts, {
     total: 10,
-    timeout: 1000,
+    timeout: 2000,
   });
 };
 
-set();
+shortcuts();
