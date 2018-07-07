@@ -32,9 +32,9 @@
 		}
 	],
 	"icons": {
-		// "16": "16.png",
-		// "48": "48.png",
-		// "128": "128.png"
+		"16": "16.png",
+		"48": "48.png",
+		"128": "128.png"
 	},
 	"web_accessible_resources": [
     "shortcuts.js"
