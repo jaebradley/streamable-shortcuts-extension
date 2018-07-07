@@ -10,7 +10,7 @@ const DESCENDING_VOLUMES = ASCENDING_VOLUMES.slice().reverse();
 
 const TOGGLE_FULL_SCREEN_KEY = 'f';
 const TOGGLE_MUTE_KEY = 'm';
-const TOGGLE_PLAY_KEY = ' ';
+const TOGGLE_PLAY_KEY = 'p';
 const INCREASE_VOLUME_KEY = 'V';
 const DECREASE_VOLUME_KEY = 'v';
 const DOWNLOAD_KEY = 'd';

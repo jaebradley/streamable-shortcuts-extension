@@ -28,6 +28,9 @@
 			],
 			"js": [
 				"content.js"
+			],
+			"css": [
+				"index.css"
 			]
 		}
 	],
@@ -37,6 +40,8 @@
 		"128": "128.png"
 	},
 	"web_accessible_resources": [
-    "shortcuts.js"
+		"shortcuts.js",
+		"help.html",
+		"index.css"
   ]
 }
