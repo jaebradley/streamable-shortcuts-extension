@@ -1,7 +1,7 @@
 {
-  "name": "github-pr-shortcuts",
+  "name": "streamable-shortcuts-extension",
   "version": "0.0.0-development",
-  "description": "Browser Shortcuts for GitHub PR Tabs",
+  "description": "Browser Shortcuts for Streamable",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode=production",
@@ -14,10 +14,7 @@
     "watch": "webpack --mode=development --watch"
   },
   "keywords": [
-    "github",
-    "pr",
-    "pull",
-    "request",
+    "streamable",
     "chrome",
     "shortcuts"
   ],
@@ -25,7 +22,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jaebradley/github-pr-shortcuts.git"
+    "url": "https://github.com/jaebradley/streamable-shortcuts-extension.git"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.49",
@@ -57,8 +54,6 @@
   },
   "dependencies": {
     "element-ready": "^3.0.0",
-    "github-reserved-names": "^1.0.9",
-    "retryer": "^1.1.2",
-    "webextension-polyfill": "^0.2.1"
+    "retryer": "^1.1.2"
   }
 }
