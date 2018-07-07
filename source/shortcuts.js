@@ -2,7 +2,7 @@ import elementReady from 'element-ready';
 import retryer from 'retryer';
 
 const setShortcuts = () => {
-  if (areObjectsAvailable()) {
+  if (!areObjectsAvailable()) {
     return Promise.reject('Objects are not available');
   }
 
