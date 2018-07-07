@@ -32,8 +32,8 @@ const getFilename = () => `${global.videoObject.reddit_title
 
 // Bypass CORS
 // https://github.com/Rob--W/cors-anywhere/#documentation
-const getDownloadURL = () => `https://cors-anywhere.herokuapp.com/${getDownloadLink().getAttribute('href')}`;
 const getDownloadLink = () => global.document.querySelector(DOWNLOAD_LINK_ID);
+const getDownloadURL = () => `https://cors-anywhere.herokuapp.com/${getDownloadLink().getAttribute('href')}`;
 
 export {
   areObjectsAvailable,
