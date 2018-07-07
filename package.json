@@ -58,6 +58,7 @@
   "dependencies": {
     "element-ready": "^3.0.0",
     "github-reserved-names": "^1.0.9",
+    "retryer": "^1.1.2",
     "webextension-polyfill": "^0.2.1"
   }
 }
