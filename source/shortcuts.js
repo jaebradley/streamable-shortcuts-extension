@@ -1,4 +1,3 @@
-import elementReady from 'element-ready';
 import retryer from 'retryer';
 
 import {
@@ -14,6 +13,7 @@ import {
   getFilename,
   getDownloadURL,
   getDownloadLink,
+  checkIfDOMElementsAreAvailable,
 } from './utilities';
 
 import {
@@ -105,15 +105,6 @@ const setShortcuts = () => {
   global.document.addEventListener('keydown', keyDown, false);
   return Promise.resolve('Streamable shortcuts extension: keydown event listener is now set');
 };
-
-const checkIfDOMElementsAreAvailable = () => Promise.all(
-  REQUIRED_DOM_ELEMENTS
-    .map(async (element) => {
-      const domElement = await elementReady(element);
-      console.debug(`Streamable shortcuts extension: element ${element} is ready: ${domElement}`);
-      return domElement;
-    }),
-);
 
 const shortcuts = async () => {
   await checkIfDOMElementsAreAvailable();

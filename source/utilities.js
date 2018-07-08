@@ -1,8 +1,11 @@
+import elementReady from 'element-ready';
+
 import {
   ASCENDING_VOLUMES,
   DESCENDING_VOLUMES,
   FULL_SCREEN_BUTTON_ID,
   DOWNLOAD_LINK_ID,
+  REQUIRED_DOM_ELEMENTS,
 } from './constants';
 
 const areObjectsAvailable = () => {
@@ -35,6 +38,15 @@ const getFilename = () => `${global.videoObject.reddit_title
 const getDownloadLink = () => global.document.querySelector(DOWNLOAD_LINK_ID);
 const getDownloadURL = () => `https://cors-anywhere.herokuapp.com/${getDownloadLink().getAttribute('href')}`;
 
+const checkIfDOMElementsAreAvailable = () => Promise.all(
+  REQUIRED_DOM_ELEMENTS
+    .map(async (element) => {
+      const domElement = await elementReady(element);
+      console.debug(`Streamable shortcuts extension: element ${element} is ready: ${domElement}`);
+      return domElement;
+    }),
+);
+
 export {
   areObjectsAvailable,
   findNextVolume,
@@ -48,4 +60,5 @@ export {
   getFilename,
   getDownloadURL,
   getDownloadLink,
+  checkIfDOMElementsAreAvailable,
 };
