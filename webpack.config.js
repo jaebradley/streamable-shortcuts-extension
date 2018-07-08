@@ -35,19 +35,7 @@ module.exports = {
 };
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.plugins.push(new UglifyJSPlugin({
-    uglifyOptions: {
-      // Keep it somewhat readable for AMO reviewers
-      mangle: false,
-      compress: false,
-      output: {
-        beautify: true,
-
-        // Reduce beautification indentation from 4 spaces to 1 to save space
-        indent_level: 2, // eslint-disable-line camelcase
-      },
-    },
-  }));
+  module.exports.plugins.push(new UglifyJSPlugin());
 } else {
   module.exports.devtool = 'source-map';
 }
