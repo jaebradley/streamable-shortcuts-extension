@@ -60,7 +60,8 @@ kbd.light, .light-keys kbd, .key.light, .light-keys .key {
 }
 
 .streamable-chrome-extension-help .shortcut-option {
-  list-style-type: none;
+	list-style-type: none;
+	padding-top: 4px;
 }
 
 .streamable-chrome-extension-help .shortcut-option .key-definition {

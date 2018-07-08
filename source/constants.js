@@ -18,10 +18,12 @@ const DOWNLOAD_KEY = 'd';
 const FULL_SCREEN_BUTTON_ID = '#player-fullscreen-button';
 const BODY = 'body';
 const DOWNLOAD_LINK_ID = '#download';
+const STICKY_FOOTER_CLASS_NAME = '.stickyfooter';
 const REQUIRED_DOM_ELEMENTS = [
   BODY,
   FULL_SCREEN_BUTTON_ID,
   DOWNLOAD_LINK_ID,
+  STICKY_FOOTER_CLASS_NAME,
 ];
 
 export {
@@ -36,5 +38,6 @@ export {
   FULL_SCREEN_BUTTON_ID,
   BODY,
   DOWNLOAD_LINK_ID,
+  STICKY_FOOTER_CLASS_NAME,
   REQUIRED_DOM_ELEMENTS,
 };
