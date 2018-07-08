@@ -4,7 +4,8 @@
   "description": "Browser Shortcuts for Streamable",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode=production",
+    "build": "rm -rf build && webpack --mode=development",
+    "build:prod": "NODE_ENV=production webpack --mode=production",
     "codecov": "codecov",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "lint": "eslint --ext .js .",
