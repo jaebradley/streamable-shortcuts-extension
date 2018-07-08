@@ -40,11 +40,7 @@ const getDownloadURL = () => `https://cors-anywhere.herokuapp.com/${getDownloadL
 
 const checkIfDOMElementsAreAvailable = () => Promise.all(
   REQUIRED_DOM_ELEMENTS
-    .map(async (element) => {
-      const domElement = await elementReady(element);
-      console.debug(`Streamable shortcuts extension: element ${element} is ready: ${domElement}`);
-      return domElement;
-    }),
+    .map(async element => elementReady(element)),
 );
 
 export {

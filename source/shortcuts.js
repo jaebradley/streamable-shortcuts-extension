@@ -23,7 +23,6 @@ import {
   INCREASE_VOLUME_KEY,
   DECREASE_VOLUME_KEY,
   DOWNLOAD_KEY,
-  REQUIRED_DOM_ELEMENTS,
 } from './constants';
 
 let LAST_POSITIVE_VOLUME = 0.5;
@@ -98,21 +97,29 @@ const keyDown = ({ key }) => {
 };
 
 const setShortcuts = () => {
+  console.debug('Streamable shortcuts extension: checking if objects are available');
   if (!areObjectsAvailable()) {
     return Promise.reject(new Error('Streamable shortcuts extension: Objects are not available'));
   }
 
+  console.debug('Streamable shortcuts extension: setting keydown');
   global.document.addEventListener('keydown', keyDown, false);
   return Promise.resolve('Streamable shortcuts extension: keydown event listener is now set');
 };
 
 const shortcuts = async () => {
-  await checkIfDOMElementsAreAvailable();
+  try {
+    console.debug('Streamable shortcuts extension: checking if all necessary DOM elements are available...');
+    await checkIfDOMElementsAreAvailable();
+    console.debug('Streamable shortcuts extension: All necessary DOM elements are available!');
 
-  retryer(setShortcuts, {
-    total: 10,
-    timeout: 2000,
-  });
+    retryer(setShortcuts, {
+      total: 10,
+      timeout: 2000,
+    });
+  } catch (e) {
+    console.error('Streamable shortcuts extension error: ', e);
+  }
 };
 
 shortcuts();
