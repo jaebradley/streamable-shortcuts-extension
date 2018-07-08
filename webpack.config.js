@@ -30,9 +30,6 @@ module.exports = {
         context: 'source',
         ignore: '*.js',
       },
-      {
-        from: 'node_modules/webextension-polyfill/dist/browser-polyfill.min.js',
-      },
     ]),
   ],
 };
