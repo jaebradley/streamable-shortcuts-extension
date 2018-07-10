@@ -2,7 +2,7 @@ import {
   checkIfDOMElementsAreAvailable,
 } from './utilities';
 import {
-  STICKY_FOOTER_CLASS_NAME,
+  PLAYER_ID,
 } from './constants';
 
 const setup = async () => {
@@ -20,7 +20,7 @@ const setup = async () => {
     // Inject help HTML
     const response = await global.fetch(global.chrome.extension.getURL('help.html'));
     await response.text()
-      .then(help => document.querySelector(STICKY_FOOTER_CLASS_NAME).insertAdjacentHTML('beforebegin', help));
+      .then(help => document.querySelector(PLAYER_ID).insertAdjacentHTML('afterend', help));
     return null;
   } catch (e) {
     console.error('Streamable shortcuts extension error: ', e);
